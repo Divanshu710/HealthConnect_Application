@@ -5,8 +5,8 @@ import Headerpatient from "../Pages/Headerpatient";
 import { AuthContextPatient } from "../ContextAPI/AuthContextPatient";
 import { Stethoscope } from "lucide-react"; // doctor icon
 
-const API = "http://localhost:5000/api/v1/doctor/alldoctors";
-
+//const API = "http://localhost:5000/api/v1/doctor/alldoctors";
+const API = "https://codes-k5ka.onrender.com/api/v1/doctor/alldoctors";
 function Bookappointments() {
   const [doctors, setDoctors] = useState([]);
   const { patient } = useContext(AuthContextPatient);

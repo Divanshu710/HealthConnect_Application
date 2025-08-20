@@ -2,7 +2,8 @@ import React,{useContext, useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContextDoctor } from '../ContextAPI/AuthContextDoctor';
-const APi='http://localhost:5000/api/v1/doctor/login'
+// const APi='http://localhost:5000/api/v1/doctor/login';
+const APi='https://codes-k5ka.onrender.com/api/v1/doctor/login'
 
 function Doctorlogin() {
     const navigate=useNavigate();

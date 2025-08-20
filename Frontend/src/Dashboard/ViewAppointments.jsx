@@ -8,7 +8,7 @@ function ViewAppointments() {
   const [appointment, setAppointment] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const API = `http://localhost:5000/api/v1/appointments/${doctor}/getappointmentsbydoctor`;
+  const API = `https://codes-k5ka.onrender.com/api/v1/appointments/${doctor}/getappointmentsbydoctor`;
 
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function ViewAppointments() {
   }, [API]);
 
   
-  const getpatient_API=`http://localhost:5000/api/v1/patient/${appointment.patientId}/getpatientname`
+  const getpatient_API=`https://codes-k5ka.onrender.com/api/v1/patient/${appointment.patientId}/getpatientname`
   // Filter future appointments (date >= today)
   const today = new Date();
   today.setHours(0, 0, 0, 0);

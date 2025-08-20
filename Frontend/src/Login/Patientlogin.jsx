@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContextPatient } from '../ContextAPI/AuthContextPatient';
 import { motion } from "framer-motion";
 
-const API = 'http://localhost:5000/api/v1/patient/login';
+// const API = 'http://localhost:5000/api/v1/patient/login';
+const API = 'https://codes-k5ka.onrender.com/api/v1/patient/login';
+
 
 
 

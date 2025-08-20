@@ -20,7 +20,7 @@ function Booking() {
     const getPatientId = async () => {
       try {
         const encodedDoctorName = encodeURIComponent(doctorName);
-        const API = `http://localhost:5000/api/v1/patient/${patient}/${encodedDoctorName}/book-appointment`;
+        const API = `https://codes-k5ka.onrender.com/api/v1/patient/${patient}/${encodedDoctorName}/book-appointment`;
         const response = await axios.get(API);
         setPatientId(response.data.data.id);
       } catch (err) {
@@ -31,7 +31,7 @@ function Booking() {
     const getDoctorId = async () => {
       try {
         const encodedDoctorName = encodeURIComponent(doctorName);
-        const API = `http://localhost:5000/api/v1/doctor/${patient}/${encodedDoctorName}/book-appointment`;
+        const API = `https://codes-k5ka.onrender.com/api/v1/doctor/${patient}/${encodedDoctorName}/book-appointment`;
         const response = await axios.get(API);
         setDoctorId(response.data.data.id);
       } catch (err) {
@@ -43,7 +43,7 @@ function Booking() {
     getDoctorId();
   }, [patient, doctorName]);
 
-  const isbookingpossible_API='http://localhost:5000/api/v1/appointments/isbookingpossible';
+  const isbookingpossible_API='https://codes-k5ka.onrender.com/api/v1/appointments/isbookingpossible';
 
   const canbebooked=async()=>{
     try {
@@ -69,7 +69,7 @@ function Booking() {
     return;
   }
     try {
-      const orderRes = await axios.post('http://localhost:5000/create-order', {
+      const orderRes = await axios.post('https://codes-k5ka.onrender.com/create-order', {
         amount: 200,
         currency: 'INR',
         receipt: `receipt_order_${Date.now()}`,
@@ -85,7 +85,7 @@ function Booking() {
         order_id: orderRes.data.id,
         handler: async function (response) {
           try {
-            await axios.post('http://localhost:5000/api/v1/appointments/bookappointment', {
+            await axios.post('https://codes-k5ka.onrender.com/api/v1/appointments/bookappointment', {
               patientId,
               doctorId,
               date,

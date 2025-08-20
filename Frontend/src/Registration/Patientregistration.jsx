@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 
-const API = 'http://localhost:5000/api/v1/patient/register';
+const API = 'https://codes-k5ka.onrender.com/api/v1/patient/register';
 
 function Patientregistration() {
   const navigate = useNavigate();

@@ -7,7 +7,7 @@ function Historyappointments() {
     const [appointment, setAppointment] = useState([]);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const API = `http://localhost:5000/api/v1/appointments/${doctor}/getappointmentsbydoctor`;
+    const API = `https://codes-k5ka.onrender.com/api/v1/appointments/${doctor}/getappointmentsbydoctor`;
      useEffect(() => {
         const getAppointments = async () => {
           try {

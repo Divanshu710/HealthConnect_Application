@@ -10,7 +10,7 @@ function UpcomingBookings() {
   const [appointment, setAppointment] = useState([]);
   const [doctorNamesMap, setDoctorNamesMap] = useState({});
   const { patient } = useParams();
-  const API = `http://localhost:5000/api/v1/appointments/${patient}/getappointments`;
+  const API = `https://codes-k5ka.onrender.com/api/v1/appointments/${patient}/getappointments`;
 
   useEffect(() => {
     const getAllAppointments = async () => {
@@ -33,7 +33,7 @@ function UpcomingBookings() {
       await Promise.all(
         uniqueDoctorIds.map(async (doctorId) => {
           try {
-            const res = await axios.get(`http://localhost:5000/api/v1/doctor/${doctorId}/getdoctorname`);
+            const res = await axios.get(`https://codes-k5ka.onrender.com/api/v1/doctor/${doctorId}/getdoctorname`);
             nameMap[doctorId] = res.data.data || res.data;
           } catch (error) {
             nameMap[doctorId] = 'Unknown Doctor';
