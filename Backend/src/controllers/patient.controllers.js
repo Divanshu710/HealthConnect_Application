@@ -51,13 +51,13 @@ const registerPatient = asyncHandler(async (req, res) => {
 })
 
 const loginPatient = asyncHandler(async (req, res) => {
-    
+
         const { username, password } = req.body;
         if (!username || !password) {
             throw new ApiError(400, "All fields are required");
         }
         //checking if the patient data exist in DB
-        
+
         const patient = await Patient.findOne({ username })
 
         if (!patient) {
@@ -76,7 +76,7 @@ const loginPatient = asyncHandler(async (req, res) => {
             process.env.JWT_SECRET,
             {expiresIn: "7d"}
         )
-        
+
         return res
             .status(200)
             .cookie("accessToken",token,

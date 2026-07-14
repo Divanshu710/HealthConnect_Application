@@ -52,7 +52,7 @@ const bookappointment = asyncHandler(async (req, res) => {
 });
 
 
-  const isbookingpossible=asyncHandler(async(req,res)=>{
+const isbookingpossible=asyncHandler(async(req,res)=>{
         const {doctorId,date,timeslot}=req.body;
         try {
           const alreadybooked= await Appointment.findOne({
@@ -113,7 +113,6 @@ const getappointmentbydoctor = asyncHandler(async(req,res)=>{
 })
 
 const cancelappointment=asyncHandler(async(req,res)=>{
-
 })
 
 export {

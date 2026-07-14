@@ -67,7 +67,7 @@ function Booking() {
     if (!window.Razorpay) {
     setError("Razorpay SDK not loaded yet. Please refresh and try again.");
     return;
-  }
+   }
     try {
       const orderRes = await axios.post('https://codes-k5ka.onrender.com/create-order', {
         amount: 200,
@@ -75,7 +75,6 @@ function Booking() {
         receipt: `receipt_order_${Date.now()}`,
         notes: { patientId, doctorId, date, timeslot },
       });
-
       const options = {
         key: razorpayKey,
         amount: orderRes.data.amount,
@@ -100,7 +99,7 @@ function Booking() {
             setTimeslot('');
             setReason('');
           } catch (err) {
-            setError('⚠️ Payment succeeded but booking failed.');
+            setError('⚠️ Payment failed.');
             setSuccess('');
           }
         },
