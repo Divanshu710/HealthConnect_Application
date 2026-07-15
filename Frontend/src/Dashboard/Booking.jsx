@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Headerpatient from '../Pages/Headerpatient';
+import API_BASE_URL from '../config';
 
 const TIMESLOTS = ['10-11', '11-12', '12-1', '1-2', '2-3', '3-4'];
 
@@ -15,35 +16,43 @@ function Booking() {
   const [reason, setReason] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [loadingIds, setLoadingIds] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+    
     const getPatientId = async () => {
       try {
         const encodedDoctorName = encodeURIComponent(doctorName);
-        const API = `https://codes-k5ka.onrender.com/api/v1/patient/${patient}/${encodedDoctorName}/book-appointment`;
+        const API = `${API_BASE_URL}/api/v1/patient/${patient}/${encodedDoctorName}/book-appointment`;
         const response = await axios.get(API);
-        setPatientId(response.data.data.id);
+        if (!cancelled) setPatientId(response.data.data.id);
       } catch (err) {
         console.log(err);
+        if (!cancelled) setError('Failed to fetch patient info. Is the backend running?');
       }
     };
 
     const getDoctorId = async () => {
       try {
         const encodedDoctorName = encodeURIComponent(doctorName);
-        const API = `https://codes-k5ka.onrender.com/api/v1/doctor/${patient}/${encodedDoctorName}/book-appointment`;
+        const API = `${API_BASE_URL}/api/v1/doctor/${patient}/${encodedDoctorName}/book-appointment`;
         const response = await axios.get(API);
-        setDoctorId(response.data.data.id);
+        if (!cancelled) setDoctorId(response.data.data.id);
       } catch (err) {
         console.log(err);
+        if (!cancelled) setError('Failed to fetch doctor info. Is the backend running?');
       }
     };
 
-    getPatientId();
-    getDoctorId();
+    Promise.all([getPatientId(), getDoctorId()]).finally(() => {
+      if (!cancelled) setLoadingIds(false);
+    });
+
+    return () => { cancelled = true; };
   }, [patient, doctorName]);
 
-  const isbookingpossible_API='https://codes-k5ka.onrender.com/api/v1/appointments/isbookingpossible';
+  const isbookingpossible_API=`${API_BASE_URL}/api/v1/appointments/isbookingpossible`;
 
   const canbebooked=async()=>{
     try {
@@ -69,7 +78,7 @@ function Booking() {
     return;
    }
     try {
-      const orderRes = await axios.post('https://codes-k5ka.onrender.com/create-order', {
+      const orderRes = await axios.post(`${API_BASE_URL}/create-order`, {
         amount: 200,
         currency: 'INR',
         receipt: `receipt_order_${Date.now()}`,
@@ -84,7 +93,7 @@ function Booking() {
         order_id: orderRes.data.id,
         handler: async function (response) {
           try {
-            await axios.post('https://codes-k5ka.onrender.com/api/v1/appointments/bookappointment', {
+            await axios.post(`${API_BASE_URL}/api/v1/appointments/bookappointment`, {
               patientId,
               doctorId,
               date,
@@ -150,6 +159,14 @@ function Booking() {
             Book Appointment
           </h1>
 
+          {/* Loading overlay while fetching IDs */}
+          {loadingIds && (
+            <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3" />
+              <p className="text-sm">Loading your details...</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Date */}
             <label className="block">
@@ -200,9 +217,10 @@ function Booking() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-br from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              disabled={loadingIds}
+              className="w-full bg-gradient-to-br from-emerald-500 to-green-400 text-white py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              Book Appointment & Pay
+              {loadingIds ? 'Loading patient info...' : 'Book Appointment & Pay'}
             </button>
           </form>
 

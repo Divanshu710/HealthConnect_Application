@@ -9,6 +9,6 @@ router.route("/register").post(registerPatient);
 router.route("/login").post(loginPatient)
 router.route("/logout").post(logoutPatient)
 router.route("/current-patient").get(verifyJWT,getPatientProfile)
-router.route("/:patient/:doctorName/book-appointment").get(verifyJWT,getidbyusername)
+router.route("/:patient/:doctorName/book-appointment").get(getidbyusername)
 router.route("/:patientId/getpatientname").get(getpatientnamebyid)
 export default router

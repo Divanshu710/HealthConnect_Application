@@ -3,6 +3,7 @@ import Headerpatient from '../Pages/Headerpatient';
 import { useNavigate } from 'react-router-dom';
 import { AuthContextPatient } from '../ContextAPI/AuthContextPatient';
 import { motion } from "framer-motion";
+import ChatbotWidget from './ChatbotWidget';
 
 function PatientDashboard() {
   const navigate = useNavigate();
@@ -94,6 +95,8 @@ function PatientDashboard() {
           ))}
         </div>
       </main>
+
+      <ChatbotWidget patientUsername={patient} />
     </div>
   );
 }

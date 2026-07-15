@@ -100,10 +100,12 @@ import healthcheckrouter from "./routes/healthcheck.routes.js";
 import patientRouter from "./routes/patient.routes.js"
 import doctorRouter from "./routes/doctor.routes.js"
 import appointmentRouter from "./routes/appointment.routes.js"
+import chatRouter from "./routes/chat.routes.js";
 //routes
 
 app.use("/api/v1/healthcheck",healthcheckrouter)
 app.use("/api/v1/patient",patientRouter)
 app.use("/api/v1/doctor",doctorRouter)
 app.use("/api/v1/appointments",appointmentRouter)
+app.use("/api/v1/chat", chatRouter)
 export {app}
