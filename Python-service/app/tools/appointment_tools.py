@@ -75,7 +75,7 @@ def prepare_booking(patient_username: str, doctor_id: str, date: str, timeslot:s
             "message": "Selected sort is already booked. "
         })
     
-    return {
+    return json.dumps({
         "ok": True,
         "action": "PAYMENT_REQUIRED",
         "bookingDraft": {
@@ -88,4 +88,4 @@ def prepare_booking(patient_username: str, doctor_id: str, date: str, timeslot:s
             "reason": reason,
             "amount": 200,
         },
-    }
+    })

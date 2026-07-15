@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     mongodb_db_name: str = Field(default = "healthConnect", alias = "MONGODB_DB_NAME")
     groq_api_key: str = Field(alias = "GROQ_API_KEY")
 
-    model_config = SettingsConfigDict(envfile=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 settings = Settings()
 

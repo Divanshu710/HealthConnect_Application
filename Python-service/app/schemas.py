@@ -10,7 +10,7 @@ class ChatResponse(BaseModel):
     threadId: str
     reply: str
     action: str = "NONE"
-    bookingDraft: Optional[dict[str,any]] = None
+    bookingDraft: Optional[dict[str,Any]] | None
 
 class BookingDraft(BaseModel):
     patientId: str

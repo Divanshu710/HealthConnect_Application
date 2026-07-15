@@ -5,7 +5,7 @@ langgraph>=0.0.65
 
 # LLM Provider (Assuming OpenAI based on the earlier JS example)
 langchain-openai>=0.1.0
-langchain-groq
+langchain_groq
 
 # API Server (To communicate with your Node backend)
 fastapi>=0.111.0
@@ -14,6 +14,7 @@ uvicorn[standard]>=0.30.0
 # Database & Data Validation
 pymongo>=4.7.0
 pydantic>=2.7.0
+pydantic-settings>=2.0.0
 
 # LangGraph Memory Systems
 langgraph-checkpoint-mongodb>=0.2.0
