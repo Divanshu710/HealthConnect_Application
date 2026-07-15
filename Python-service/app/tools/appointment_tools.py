@@ -1,0 +1,91 @@
+from langchain.tools import tool
+import json
+from bson import ObjectId
+from app.db import doctors_collection, appointments_collection, patients_collection
+from datetime import datetime, time, timezone
+
+all_slots = ["10-11", "11-12", "12-1", "1-2", "2-3", "3-4"]
+
+
+def day_range(date_text: str):
+    selected = datetime.strptime(date_text, "%Y-%m-%d").date()
+    start = datetime.combine(selected, time.min, tzinfo=timezone.utc)
+    end = datetime.combine(selected, time.max, tzinfo=timezone.utc)
+    return start, end
+
+@tool
+def get_free_slots(doctor_id: str, date: str)->str:
+    """Return free slots for one doctor on a given date YYYY-MM-DD."""
+    start, end = day_range(date)
+
+    query = {
+        "doctor_id": ObjectId(doctor_id),
+        "date": {"$gte": start, "$lte":end}
+    }
+    projection = {
+        "_id":0,
+        "timeslot": 1
+    }
+
+    booked= list(appointments_collection.find(query, projection))\
+    
+    booked_slots = [appointment.get('timeslot') for appointment in booked]
+    free_slots = [slot for slot in all_slots if slot not in booked_slots]
+
+    return json.dumps({
+        "ok": True,
+        "doctorId": doctor_id,
+        "date": date,
+        "freeSlots": free_slots,
+        "bookedSlots": booked_slots,
+    })
+
+@tool
+def prepare_booking(patient_username: str, doctor_id: str, date: str, timeslot:str, reason : str = "")->str:
+    """Validate details and return bookingDraft for Razorpay payment."""
+
+    patient = patients_collection.find_one({"username": patient_username}, {"username": 1})
+    doctor = doctors_collection.find_one({"_id": ObjectId(doctor_id)},{
+        "name": 1, "specialization": 1
+    })
+
+    if not patient:
+        return json.dumps({
+            "ok": False,
+            "message": "Patient Not Found."
+        })
+    
+    if not doctor:
+        return json.dumps({
+            "ok": False,
+            "message": "Doctor Not Found. "
+        })
+    
+    start, end = day_range(date)
+
+    existing = appointments_collection.find_one({
+        "doctorId": ObjectId(doctor_id),
+        "date": {"$gte": start, "$lte":end},
+        "timeslot": timeslot
+    })
+
+    if existing:
+        return json.dumps({
+            "ok": False,
+            "message": "Selected sort is already booked. "
+        })
+    
+    return {
+        "ok": True,
+        "action": "PAYMENT_REQUIRED",
+        "bookingDraft": {
+            "patientId": str(patient["_id"]),
+            "patientUsername": patient_username,
+            "doctorId": str(doctor["_id"]),
+            "doctorName": doctor.get("name", ""),
+            "date": date,
+            "timeslot": timeslot,
+            "reason": reason,
+            "amount": 200,
+        },
+    }
