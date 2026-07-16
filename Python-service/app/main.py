@@ -9,7 +9,7 @@ app = FastAPI(title = "HealthConnect AI Service")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = ["http://localhost:5000"],
+    allow_origins = ["http://localhost:5000", "https://codes-k5ka.onrender.com"],
     allow_credentials = True,
     allow_methods = ["POST", "GET"],
     allow_headers = ["*"],
