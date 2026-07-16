@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Headerpatient from '../Pages/Headerpatient';
 import API_BASE_URL from '../config';
 
@@ -9,16 +9,22 @@ const TIMESLOTS = ['10-11', '11-12', '12-1', '1-2', '2-3', '3-4'];
 function Booking() {
   const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
   const { patient, doctorName } = useParams();
-  const [patientId, setPatientId] = useState(null);
-  const [doctorId, setDoctorId] = useState(null);
-  const [date, setDate] = useState('');
-  const [timeslot, setTimeslot] = useState('');
-  const [reason, setReason] = useState('');
+  const location = useLocation();
+  const draft = location.state?.bookingDraft;
+
+  const [patientId, setPatientId] = useState(draft?.patientId || null);
+  const [doctorId, setDoctorId] = useState(draft?.doctorId || null);
+  const [date, setDate] = useState(draft?.date || '');
+  const [timeslot, setTimeslot] = useState(draft?.timeslot || '');
+  const [reason, setReason] = useState(draft?.reason || '');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
-  const [loadingIds, setLoadingIds] = useState(true);
+  const [loadingIds, setLoadingIds] = useState(!draft); // No loading if draft exists
 
   useEffect(() => {
+    // If draft exists, skip API calls — all IDs are pre-filled
+    if (draft) return;
+
     let cancelled = false;
     
     const getPatientId = async () => {
@@ -50,7 +56,7 @@ function Booking() {
     });
 
     return () => { cancelled = true; };
-  }, [patient, doctorName]);
+  }, [patient, doctorName, draft]);
 
   const isbookingpossible_API=`${API_BASE_URL}/api/v1/appointments/isbookingpossible`;
 

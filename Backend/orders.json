@@ -194,5 +194,12 @@
     "currency": "INR",
     "receipt": "receipt_order_1784142151606",
     "status": "created"
+  },
+  {
+    "order_id": "order_TEBFiSIdxowZ9J",
+    "amount": 20000,
+    "currency": "INR",
+    "receipt": "receipt_order_1784206302183",
+    "status": "created"
   }
 ]

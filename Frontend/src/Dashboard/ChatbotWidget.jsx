@@ -132,7 +132,10 @@ export default function ChatbotWidget({ patientUsername }) {
                   <button
                     onClick={() => {
                       setOpen(false);
-                      navigate(`/patient/${patientUsername}/${encodeURIComponent(pendingDraft.doctorName)}/book-appointment`);
+                      navigate(
+                        `/patient/${patientUsername}/${encodeURIComponent(pendingDraft.doctorName)}/book-appointment`,
+                        { state: { bookingDraft: pendingDraft } }
+                      );
                     }}
                     className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
                   >
