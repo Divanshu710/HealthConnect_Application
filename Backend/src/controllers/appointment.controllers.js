@@ -20,6 +20,7 @@ const bookappointment = asyncHandler(async (req, res) => {
     throw new ApiError(409, "Date and Timeslot are mandatory");
   }
 
+  // Fast pre-check for better UX (catches the common case quickly)
   const isdoctorbusy = await Appointment.findOne({
     doctorId,
     date,
@@ -46,6 +47,10 @@ const bookappointment = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, { createdappointment: bookingappoint }, "Appointment booked successfully"));
   } catch (error) {
+    // Safety net: unique index catches race conditions the findOne check missed
+    if (error.code === 11000) {
+      throw new ApiError(409, "This slot was just booked by someone else. Please select a different time slot.");
+    }
     console.log(error);
     throw new ApiError(500, "Booking failed");
   }
